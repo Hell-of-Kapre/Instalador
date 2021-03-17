@@ -1,0 +1,6 @@
+C:\Users\TheWh\Documents\GitHub\Instalador-HOK\InstaladorHOK\InstaladorHOK\bin\Debug\InstaladorHOK.exe
+C:\Users\TheWh\Documents\GitHub\Instalador-HOK\InstaladorHOK\InstaladorHOK\bin\Debug\InstaladorHOK.pdb
+C:\Users\TheWh\Documents\GitHub\Instalador-HOK\InstaladorHOK\InstaladorHOK\obj\Debug\InstaladorHOK.csprojAssemblyReference.cache
+C:\Users\TheWh\Documents\GitHub\Instalador-HOK\InstaladorHOK\InstaladorHOK\obj\Debug\InstaladorHOK.csproj.CoreCompileInputs.cache
+C:\Users\TheWh\Documents\GitHub\Instalador-HOK\InstaladorHOK\InstaladorHOK\obj\Debug\InstaladorHOK.exe
+C:\Users\TheWh\Documents\GitHub\Instalador-HOK\InstaladorHOK\InstaladorHOK\obj\Debug\InstaladorHOK.pdb
