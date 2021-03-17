@@ -33,7 +33,34 @@ namespace InstaladorHOK
             Console.WriteLine("Aguarde enquanto o instalador faz o trabalho ;D\n");
         }
 
-        
+        public static void ChoseOption()
+        {
+            int svopsecec;
+            Console.WriteLine("========== Inicializador HOK ==========\n");
+            Console.WriteLine("Olá jogador, seja bem vindo ao inicializador da HOK.");
+            Console.WriteLine("O que você quer fazer hoje?");
+            //Escolhendo Entrada
+            Console.WriteLine("Deseja entrar no servidor?");
+            Console.WriteLine("[1] Entrar no Servidor");
+            Console.WriteLine("[2] Instalar/Atualizar/Desinstalar");
+            Console.Write("> ");
+            svopsecec = int.Parse(Console.ReadLine());
+            //Entrada
+            if (svopsecec == 1)
+                JoinServer();
+            else if (svopsecec == 2)
+            {
+                Console.Clear();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("\nOpção Inválida, reiniciando...");
+                Console.Clear();
+                ChoseOption();
+            }
+        }
+
         public static void InstallMenu()
         {
             Menu();
@@ -363,6 +390,7 @@ namespace InstaladorHOK
         //Função principal
         public static void Main(string[] args)
         {
+            ChoseOption();
 
             //Chamando o programa
             //Tetando o padrão
