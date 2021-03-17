@@ -2,12 +2,12 @@
 using System.IO;
 using System.Net;
 using System.IO.Compression;
+using Microsoft.Win32;
 
 namespace InstaladorHOK
 {
     internal class Program
     {
-        public string dirgame = "C:/Program Files (x86)/Steam/steamapps/common/valheim";
         public string dirselected = null;
         static Program programa = new Program();
         
@@ -47,7 +47,10 @@ namespace InstaladorHOK
             svopsecec = int.Parse(Console.ReadLine());
             //Entrada
             if (svopsecec == 1)
+            {
                 JoinServer();
+                System.Environment.Exit(0);
+            }
             else if (svopsecec == 2)
             {
                 Console.Clear();
@@ -71,26 +74,48 @@ namespace InstaladorHOK
             Console.Write("> ");
         }
 
+        public static string RegistryDefault()
+        {
+            string interdirgame = string.Empty;
+            try
+            {
+                RegistryKey registryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 892970");
+                if (registryKey != null)
+                    interdirgame = registryKey.GetValue("InstallLocation").ToString();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return interdirgame;
+        }
+        
+
         public bool TestDefaultDirectory()
         {
+            //Menu
             Menu();
-            Console.WriteLine("Teste do diretório padrão...");
+            //Procurando Diretório Padrão
+            string dirgame = RegistryDefault();
+            programa.dirselected = dirgame;
+
             bool exists = System.IO.Directory.Exists(dirgame);
+
+            Console.WriteLine("Procurando Diretório...");
 
             if (exists)
             {
-                Console.WriteLine("Diretório padrão encontrado! Procurando por Valheim.exe");
+                Console.WriteLine("O diretório foi encontrado! Procurando por Valheim.exe");
                 Directory.SetCurrentDirectory(dirgame);
                 System.Threading.Thread.Sleep(2000);
                 SearchingValheimExe(dirgame);
-                Console.WriteLine("Valheim.exe foi encontrado, continuando...");
-                SearchingBepInExInstall(dirgame);
                 System.Threading.Thread.Sleep(3000);
                 Console.Clear();
             }
             else
             {
-                Console.WriteLine("Diretório padrão não encontrado, continuando...");
+                Console.WriteLine("O diretório não foi encontrado, continuando...");
                 System.Threading.Thread.Sleep(8000);
                 Console.Clear();
             }
@@ -140,7 +165,7 @@ namespace InstaladorHOK
 
         public static void SearchingBepInExInstall(string dir)
         {
-            //Console.WriteLine("SearchingBepInEx Dir Recebido: " + dir);
+            Console.WriteLine("SearchingBepInEx Dir Recebido: " + dir);
             bool existsbepinex = false;
             bool existsdoorstop = System.IO.File.Exists($"{dir}/doorstop_config.ini");
             bool existswinhttp = System.IO.File.Exists($"{dir}/winhttp.dll");
@@ -169,7 +194,7 @@ namespace InstaladorHOK
 
                 if (opcselec == 1)
                 {
-                    Console.WriteLine("Removendo Arquivos...");
+                    Console.WriteLine("\nRemovendo Arquivos...");
                     System.Threading.Thread.Sleep(2000);
                     
                     //Deleting Files
@@ -195,14 +220,14 @@ namespace InstaladorHOK
                         DirectoryInfo directoryunstrip = new DirectoryInfo(unstrippeddir);
                         directoryunstrip.Delete(true);
                     }
-                    Console.WriteLine("\nRemoção de arquivo concluída com sucesso!");
+                    Console.WriteLine("Remoção de arquivo concluída com sucesso!");
                     System.Threading.Thread.Sleep(2000);
                 }
                 else if (opcselec == 2)
                 {
                     Console.WriteLine("Ok, se você quiser instalar o mod você deve apagar arquivos de instalações anteriores ou selecionar a opção \"Atualizar Mods\".");
                     System.Threading.Thread.Sleep(8000);
-                    InstallMenu();
+                    System.Environment.Exit(0);
                 }
                 else
                 {
@@ -311,7 +336,6 @@ namespace InstaladorHOK
             // Baixando o Core
             try
             {
-                SearchingBepInExInstall(programa.dirselected);
                 WebClient webClient = new WebClient();
                 Console.WriteLine("\nIniciando o download....");
                 webClient.DownloadFile("https://gkhosting.com.br/valheim/Release.zip", "Release.zip");
@@ -352,7 +376,7 @@ namespace InstaladorHOK
                 bool existsunstripped = System.IO.Directory.Exists($"{dir}/unstripped_corlib");
                 Console.WriteLine("Removendo Arquivos...");
                 System.Threading.Thread.Sleep(2000);
-                
+            
                 //Deleting Files
                 if(existsdoorstop)
                     File.Delete("doorstop_config.ini");
@@ -379,11 +403,11 @@ namespace InstaladorHOK
                 Console.WriteLine("\nRemoção de Arquivos Concluída!");
                 System.Threading.Thread.Sleep(2000);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                Console.WriteLine("A remoção de arquivos falhou, reiniciando o instalador...");
-                System.Threading.Thread.Sleep(2000);
-                InstallMenu();
+                Console.WriteLine("A remoção de arquivos falhou, encerrando instalador...");
+                System.Threading.Thread.Sleep(6000);
+                System.Environment.Exit(0);
             }
         }
 
@@ -411,6 +435,7 @@ namespace InstaladorHOK
             switch (opcaoSelecionada)
             {
              case opcao.ValheimPlus:
+                 SearchingBepInExInstall(programa.dirselected);
                  InstallValheimPlus();
                  FinishThanks();
                  break;
