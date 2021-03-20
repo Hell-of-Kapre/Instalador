@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBrasil", "VBrasil\VBrasil.csproj", "{34854B91-90C5-4E40-BE2F-232AB4B12CE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34854B91-90C5-4E40-BE2F-232AB4B12CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34854B91-90C5-4E40-BE2F-232AB4B12CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34854B91-90C5-4E40-BE2F-232AB4B12CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34854B91-90C5-4E40-BE2F-232AB4B12CE0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -165,7 +165,7 @@ namespace InstaladorHOK
 
         public static void SearchingBepInExInstall(string dir)
         {
-            Console.WriteLine("SearchingBepInEx Dir Recebido: " + dir);
+            //Console.WriteLine("SearchingBepInEx Dir Recebido: " + dir);
             bool existsbepinex = false;
             bool existsdoorstop = System.IO.File.Exists($"{dir}/doorstop_config.ini");
             bool existswinhttp = System.IO.File.Exists($"{dir}/winhttp.dll");
@@ -175,11 +175,11 @@ namespace InstaladorHOK
             
             if (existsdoorstop || existsbepfolder || existsdorstoplibs || existswinhttp || existsunstripped)
             {
-                Console.WriteLine("existsunstripped" + existsunstripped);
-                Console.WriteLine("existswinhttp" + existswinhttp);
-                Console.WriteLine("existsbepfolder" + existsbepfolder);
-                Console.WriteLine("existsdorstoplibs" + existsdorstoplibs);
-                Console.WriteLine("existsunstripped" + existsunstripped);
+                //Console.WriteLine("existsunstripped" + existsunstripped);
+                //Console.WriteLine("existswinhttp" + existswinhttp);
+                //Console.WriteLine("existsbepfolder" + existsbepfolder);
+                //Console.WriteLine("existsdorstoplibs" + existsdorstoplibs);
+                //Console.WriteLine("existsunstripped" + existsunstripped);
                 existsbepinex = true;
             }
 
