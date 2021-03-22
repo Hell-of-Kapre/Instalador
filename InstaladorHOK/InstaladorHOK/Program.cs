@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.IO.Compression;
 using Microsoft.Win32;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace InstaladorHOK
 {
@@ -19,9 +21,68 @@ namespace InstaladorHOK
             Atualizar,
         };
 
-        public static void JoinServer()
+        public static async void JoinServer()
         {
-            System.Diagnostics.Process.Start("steam://connect/play.gkhosting.net:2457");
+            bool testado = false;
+            string ipusado = null;
+            PingReply resposta = null;
+            string[] ips = new[] {"play.gkhosting.net", "play.gkhosting.net", "179.108.91.159"};
+            string[] ipsparaconectar = new[] {"steam://connect/play.gkhosting.net:2457", "steam://connect/play.gkhosting.net:2457", "steam://connect/179.108.91.159:2457"};
+
+            Ping pinger = new Ping();
+
+            if (!testado)
+            {
+                try
+                {
+                    PingReply resposta1 = await pinger.SendPingAsync(ips[0]);
+                    resposta = resposta1;
+                    ipusado = ipsparaconectar[0];
+                    testado = true;
+                    Console.WriteLine("\nIP 1 - CONECTANDO");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("IP 1 - ERRO");
+                }
+            }
+
+            if (!testado)
+            {
+                try
+                {
+                    PingReply resposta2 = await pinger.SendPingAsync(ips[1]);
+                    resposta = resposta2;
+                    ipusado = ipsparaconectar[1];
+                    testado = true;
+                    Console.WriteLine("\nIP 2 - CONECTANDO");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("IP 2 - ERRO");
+                }
+            }
+
+            if (!testado)
+            {
+                try
+                {
+                    PingReply resposta3 = await pinger.SendPingAsync(ips[2]);
+                    resposta = resposta3;
+                    ipusado = ipsparaconectar[2];
+                    Console.WriteLine("\nIP 3 - CONECTANDO");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("IP 3 - ERRO");
+                }
+            }
+
+            if (resposta.Status.ToString().ToLower() == "success")
+            {
+                Console.WriteLine(ipusado);
+                System.Diagnostics.Process.Start(ipusado);
+            }
         }
 
         public static void Menu()
