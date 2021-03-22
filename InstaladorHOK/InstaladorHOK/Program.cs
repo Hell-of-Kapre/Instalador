@@ -105,7 +105,11 @@ namespace InstaladorHOK
         public static void JoinOption(int svopsecec)
         {
             if (svopsecec == 1)
+            {
                 JoinServer();
+                System.Threading.Thread.Sleep(5000);
+                System.Environment.Exit(0);
+            } 
             else if (svopsecec == 2)
             {
                 Console.WriteLine("\nTchau!");
@@ -122,7 +126,7 @@ namespace InstaladorHOK
 
         #region Methods
         
-                public static async void JoinServer()
+        public static async void JoinServer()
         {
             bool testado = false;
             string ipusado = null;
