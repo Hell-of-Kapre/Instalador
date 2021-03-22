@@ -10,6 +10,8 @@ namespace InstaladorHOK
 {
     internal class Program
     {
+        #region Variables
+        
         public string dirselected = null;
         static Program programa = new Program();
         
@@ -20,14 +22,115 @@ namespace InstaladorHOK
             Desinstalar,
             Atualizar,
         };
+        
+        #endregion
 
-        public static async void JoinServer()
+        #region  Menus
+
+        public static void Menu()
+        {
+            Console.WriteLine("========== HOK ==========\n");
+            Console.WriteLine("ANTES DE TUDO, FECHE O SEU JOGO!");
+            Console.WriteLine("Bem vindo ao instalador da Hell of Krape");
+            Console.WriteLine("Siga os passos e as instruções quando o instalador pedir, não \'selecione\' nada na janela.");
+            Console.WriteLine("Aguarde enquanto o instalador faz o trabalho ;D\n");
+        }
+
+        public static void ChoseOption()
+        {
+            int svopsecec;
+            Console.WriteLine("========== Inicializador HOK ==========\n");
+            Console.WriteLine("Olá jogador, seja bem vindo ao inicializador da HOK.");
+            Console.WriteLine("O que você quer fazer hoje?");
+            //Escolhendo Entrada
+            Console.WriteLine("Deseja entrar no servidor?");
+            Console.WriteLine("[1] Entrar no Servidor");
+            Console.WriteLine("[2] Instalar/Atualizar/Desinstalar");
+            Console.Write("> ");
+            svopsecec = int.Parse(Console.ReadLine());
+            //Entrada
+            if (svopsecec == 1)
+            {
+                JoinServer();
+                System.Threading.Thread.Sleep(5000);
+                System.Environment.Exit(0);
+            }
+            else if (svopsecec == 2)
+            {
+                Console.Clear();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("\nOpção Inválida, reiniciando...");
+                Console.Clear();
+                ChoseOption();
+            }
+        }
+
+        public static void InstallMenu()
+        {
+            Menu();
+            Console.WriteLine("O que você quer fazer?");
+            Console.WriteLine("[1] Instalar Mods");
+            Console.WriteLine("[2] Desinstalar Mods");
+            Console.WriteLine("[3] Atualizar Mods");
+            Console.Write("> ");
+        }
+        
+        public string SelectDirectory()
+        {
+            try
+            {
+                Menu();
+                Console.WriteLine("Primeiro, escolha o diretório.");
+                Console.WriteLine("Normalmente ele fica em: C:/Program Files (x86)/Steam/steamapps/common/valheim");
+                Console.WriteLine("Mas o seu jogo pode estar em outro local, como por exemplo: E:/Games/Valheim");
+                Console.WriteLine("Precisamos que você escreva o diretório completo, sem erros.");
+                Console.WriteLine("Em qual diretório está seu jogo?\n");
+                dirselected = Console.ReadLine();
+                SearchingDirectory(dirselected);
+                Console.Clear();
+                return dirselected;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Diretório Inválido, inexistente ou errado...");
+                System.Threading.Thread.Sleep(2000);
+                System.Environment.Exit(0);
+                throw;
+            }
+        }
+
+        public static void JoinOption(int svopsecec)
+        {
+            if (svopsecec == 1)
+                JoinServer();
+            else if (svopsecec == 2)
+            {
+                Console.WriteLine("\nTchau!");
+                System.Threading.Thread.Sleep(5000);
+            }
+            else
+            {
+                Console.WriteLine("\nOpção Inválida, reiniciando...");
+                JoinOption(svopsecec);
+            }
+        }
+        
+        #endregion
+
+        #region Methods
+        
+                public static async void JoinServer()
         {
             bool testado = false;
             string ipusado = null;
             PingReply resposta = null;
             string[] ips = new[] {"play.gkhosting.net", "play.gkhosting.net", "179.108.91.159"};
             string[] ipsparaconectar = new[] {"steam://connect/play.gkhosting.net:2457", "steam://connect/play.gkhosting.net:2457", "steam://connect/179.108.91.159:2457"};
+
+            #region Ping
 
             Ping pinger = new Ping();
 
@@ -78,61 +181,93 @@ namespace InstaladorHOK
                 }
             }
 
+            #endregion
+            
             if (resposta.Status.ToString().ToLower() == "success")
             {
-                Console.WriteLine(ipusado);
+                //Console.WriteLine(ipusado);
                 System.Diagnostics.Process.Start(ipusado);
             }
         }
-
-        public static void Menu()
+        
+        public static void InstallValheimPlus()
         {
-            Console.WriteLine("========== HOK ==========\n");
-            Console.WriteLine("ANTES DE TUDO, FECHE O SEU JOGO!");
-            Console.WriteLine("Bem vindo ao instalador da Hell of Krape");
-            Console.WriteLine("Siga os passos e as instruções quando o instalador pedir, não \'selecione\' nada na janela.");
-            Console.WriteLine("Aguarde enquanto o instalador faz o trabalho ;D\n");
-        }
-
-        public static void ChoseOption()
-        {
-            int svopsecec;
-            Console.WriteLine("========== Inicializador HOK ==========\n");
-            Console.WriteLine("Olá jogador, seja bem vindo ao inicializador da HOK.");
-            Console.WriteLine("O que você quer fazer hoje?");
-            //Escolhendo Entrada
-            Console.WriteLine("Deseja entrar no servidor?");
-            Console.WriteLine("[1] Entrar no Servidor");
-            Console.WriteLine("[2] Instalar/Atualizar/Desinstalar");
-            Console.Write("> ");
-            svopsecec = int.Parse(Console.ReadLine());
-            //Entrada
-            if (svopsecec == 1)
+            // Baixando o Core
+            try
             {
-                JoinServer();
+                WebClient webClient = new WebClient();
+                Console.WriteLine("\nIniciando o download....");
+                webClient.DownloadFile("https://gkhosting.com.br/valheim/Release.zip", "Release.zip");
+                Console.WriteLine("\nArquivo baixado com sucesso! Extraindo arquivo para o diretório do jogo...");
+                ZipFile.ExtractToDirectory("Release.zip", $"{Directory.GetCurrentDirectory()}");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("O download e a extração do núcleo falharam...");
+                Console.WriteLine("As vezes isto acontece por que o instalador não tem permissão para apagar os arquivos.");
+                Console.WriteLine("Por favor, delete os seguintes arquivos/pastas que estão no diretório do seu jogo:");
+                Console.WriteLine("/doorstop_config.ini");
+                Console.WriteLine("/winhttp.dll");
+                Console.WriteLine("/BepInEx");
+                Console.WriteLine("/doorstop_libs");
+                Console.WriteLine("/unstripped_corlib");
+                Console.WriteLine("Depois de remover eles, por favor, aperte enter para o instalador fechar,\n depois disto abra o instalador e escolha a opção \'instalar\'");
                 System.Environment.Exit(0);
             }
-            else if (svopsecec == 2)
-            {
-                Console.Clear();
-                return;
-            }
-            else
-            {
-                Console.WriteLine("\nOpção Inválida, reiniciando...");
-                Console.Clear();
-                ChoseOption();
-            }
+            
+            
+            // Limpeza de Desnecessários
+            System.Threading.Thread.Sleep(2500);
+            Console.WriteLine("Deletando arquivo baixado .zip");
+            File.Delete("Release.zip");
+            System.Threading.Thread.Sleep(2000);
+            Console.Clear();
         }
 
-        public static void InstallMenu()
+        public static void FullClean(string dir)
         {
-            Menu();
-            Console.WriteLine("O que você quer fazer?");
-            Console.WriteLine("[1] Instalar Mods");
-            Console.WriteLine("[2] Desinstalar Mods");
-            Console.WriteLine("[3] Atualizar Mods");
-            Console.Write("> ");
+            try
+            {
+                bool existsdoorstop = System.IO.File.Exists($"{dir}/doorstop_config.ini");
+                bool existswinhttp = System.IO.File.Exists($"{dir}/winhttp.dll");
+                bool existsbepfolder = System.IO.Directory.Exists($"{dir}/BepInEx");
+                bool existsdorstoplibs = System.IO.Directory.Exists($"{dir}/doorstop_libs");
+                bool existsunstripped = System.IO.Directory.Exists($"{dir}/unstripped_corlib");
+                Console.WriteLine("Removendo Arquivos...");
+                System.Threading.Thread.Sleep(2000);
+            
+                //Deleting Files
+                if(existsdoorstop)
+                    File.Delete("doorstop_config.ini");
+                if(existswinhttp)
+                    File.Delete("winhttp.dll");
+                if (existsbepfolder)
+                {
+                    string bepinexdir = $"{Directory.GetCurrentDirectory()}/BepInEx";
+                    DirectoryInfo directorybep = new DirectoryInfo(bepinexdir);
+                    directorybep.Delete(true);
+                }
+                if (existsdorstoplibs)
+                {
+                    string dorstopdir = $"{Directory.GetCurrentDirectory()}/doorstop_libs";
+                    DirectoryInfo directorydorstop = new DirectoryInfo(dorstopdir);
+                    directorydorstop.Delete(true);
+                }
+                if (existsunstripped)
+                {
+                    string unstrippeddir = $"{Directory.GetCurrentDirectory()}/unstripped_corlib";
+                    DirectoryInfo directoryunstrip = new DirectoryInfo(unstrippeddir);
+                    directoryunstrip.Delete(true);
+                }
+                Console.WriteLine("\nRemoção de Arquivos Concluída!");
+                System.Threading.Thread.Sleep(2000);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("A remoção de arquivos falhou, encerrando instalador...");
+                System.Threading.Thread.Sleep(6000);
+                System.Environment.Exit(0);
+            }
         }
 
         public static string RegistryDefault()
@@ -308,46 +443,10 @@ namespace InstaladorHOK
             }
         }
 
-        public string SelectDirectory()
-        {
-            try
-            {
-                Menu();
-                Console.WriteLine("Primeiro, escolha o diretório.");
-                Console.WriteLine("Normalmente ele fica em: C:/Program Files (x86)/Steam/steamapps/common/valheim");
-                Console.WriteLine("Mas o seu jogo pode estar em outro local, como por exemplo: E:/Games/Valheim");
-                Console.WriteLine("Precisamos que você escreva o diretório completo, sem erros.");
-                Console.WriteLine("Em qual diretório está seu jogo?\n");
-                dirselected = Console.ReadLine();
-                SearchingDirectory(dirselected);
-                Console.Clear();
-                return dirselected;
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Diretório Inválido, inexistente ou errado...");
-                System.Threading.Thread.Sleep(2000);
-                System.Environment.Exit(0);
-                throw;
-            }
-        }
+        #endregion
 
-        public static void JoinOption(int svopsecec)
-        {
-            if (svopsecec == 1)
-                JoinServer();
-            else if (svopsecec == 2)
-            {
-                Console.WriteLine("\nTchau!");
-                System.Threading.Thread.Sleep(5000);
-            }
-            else
-            {
-                Console.WriteLine("\nOpção Inválida, reiniciando...");
-                JoinOption(svopsecec);
-            }
-        }
-
+        #region Finish Messages
+        
         public static void FinishThanks()
         {
             int svopsecec;
@@ -391,94 +490,16 @@ namespace InstaladorHOK
             //Entrada
             JoinOption(svopsecec);
         }
-
-        public static void InstallValheimPlus()
-        {
-            // Baixando o Core
-            try
-            {
-                WebClient webClient = new WebClient();
-                Console.WriteLine("\nIniciando o download....");
-                webClient.DownloadFile("https://gkhosting.com.br/valheim/Release.zip", "Release.zip");
-                Console.WriteLine("\nArquivo baixado com sucesso! Extraindo arquivo para o diretório do jogo...");
-                ZipFile.ExtractToDirectory("Release.zip", $"{Directory.GetCurrentDirectory()}");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("O download e a extração do núcleo falharam...");
-                Console.WriteLine("As vezes isto acontece por que o instalador não tem permissão para apagar os arquivos.");
-                Console.WriteLine("Por favor, delete os seguintes arquivos/pastas que estão no diretório do seu jogo:");
-                Console.WriteLine("/doorstop_config.ini");
-                Console.WriteLine("/winhttp.dll");
-                Console.WriteLine("/BepInEx");
-                Console.WriteLine("/doorstop_libs");
-                Console.WriteLine("/unstripped_corlib");
-                Console.WriteLine("Depois de remover eles, por favor, aperte enter para o instalador fechar,\n depois disto abra o instalador e escolha a opção \'instalar\'");
-                System.Environment.Exit(0);
-            }
-            
-            
-            // Limpeza de Desnecessários
-            System.Threading.Thread.Sleep(2500);
-            Console.WriteLine("Deletando arquivo baixado .zip");
-            File.Delete("Release.zip");
-            System.Threading.Thread.Sleep(2000);
-            Console.Clear();
-        }
-
-        public static void FullClean(string dir)
-        {
-            try
-            {
-                bool existsdoorstop = System.IO.File.Exists($"{dir}/doorstop_config.ini");
-                bool existswinhttp = System.IO.File.Exists($"{dir}/winhttp.dll");
-                bool existsbepfolder = System.IO.Directory.Exists($"{dir}/BepInEx");
-                bool existsdorstoplibs = System.IO.Directory.Exists($"{dir}/doorstop_libs");
-                bool existsunstripped = System.IO.Directory.Exists($"{dir}/unstripped_corlib");
-                Console.WriteLine("Removendo Arquivos...");
-                System.Threading.Thread.Sleep(2000);
-            
-                //Deleting Files
-                if(existsdoorstop)
-                    File.Delete("doorstop_config.ini");
-                if(existswinhttp)
-                    File.Delete("winhttp.dll");
-                if (existsbepfolder)
-                {
-                    string bepinexdir = $"{Directory.GetCurrentDirectory()}/BepInEx";
-                    DirectoryInfo directorybep = new DirectoryInfo(bepinexdir);
-                    directorybep.Delete(true);
-                }
-                if (existsdorstoplibs)
-                {
-                    string dorstopdir = $"{Directory.GetCurrentDirectory()}/doorstop_libs";
-                    DirectoryInfo directorydorstop = new DirectoryInfo(dorstopdir);
-                    directorydorstop.Delete(true);
-                }
-                if (existsunstripped)
-                {
-                    string unstrippeddir = $"{Directory.GetCurrentDirectory()}/unstripped_corlib";
-                    DirectoryInfo directoryunstrip = new DirectoryInfo(unstrippeddir);
-                    directoryunstrip.Delete(true);
-                }
-                Console.WriteLine("\nRemoção de Arquivos Concluída!");
-                System.Threading.Thread.Sleep(2000);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("A remoção de arquivos falhou, encerrando instalador...");
-                System.Threading.Thread.Sleep(6000);
-                System.Environment.Exit(0);
-            }
-        }
+        
+        #endregion
 
         //Função principal
         public static void Main(string[] args)
         {
+            // Entrart ou Instalar
             ChoseOption();
-
-            //Chamando o programa
-            //Tetando o padrão
+            
+            //Escolhendo Diretório
             if(programa.TestDefaultDirectory())
             {
             }
@@ -492,7 +513,7 @@ namespace InstaladorHOK
             int index = int.Parse(Console.ReadLine());
             opcao opcaoSelecionada = (opcao)index;
             
-            //Selector
+            //Procesando Respostas
             switch (opcaoSelecionada)
             {
              case opcao.ValheimPlus:
