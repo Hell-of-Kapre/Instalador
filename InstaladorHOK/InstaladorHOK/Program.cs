@@ -102,7 +102,7 @@ namespace InstaladorHOK
             }
         }
 
-        public static void JoinOption(int svopsecec)
+        /*public static void JoinOption(int svopsecec)
         {
             if (svopsecec == 1)
             {
@@ -120,7 +120,7 @@ namespace InstaladorHOK
                 Console.WriteLine("\nOpção Inválida, reiniciando...");
                 JoinOption(svopsecec);
             }
-        }
+        }*/
         
         #endregion
 
@@ -453,19 +453,19 @@ namespace InstaladorHOK
         
         public static void FinishThanks()
         {
-            int svopsecec;
+            //int svopsecec;
             Console.WriteLine("========== HOK ==========\n");
             Console.WriteLine("Seja bem vindo ao Hell of Kapre, os mods foram instalados com sucesso!");
             Console.WriteLine("O instalador fechará em 10 segundos...");
-            Console.WriteLine("\nCriado Por: CastBlacKing\n");
-            //Escolhendo Entrada
+            Console.WriteLine("\nCriado Por: João Pster\n");
+            /*//Escolhendo Entrada
             Console.WriteLine("Deseja entrar no servidor?");
             Console.WriteLine("[1] Sim");
             Console.WriteLine("[2] Não");
             Console.Write("> ");
             svopsecec = int.Parse(Console.ReadLine());;
             //Entrada
-            JoinOption(svopsecec);
+            JoinOption(svopsecec);*/
         }
         
         public static void Goodbye()
@@ -473,26 +473,26 @@ namespace InstaladorHOK
             Console.WriteLine("========== HOK ==========\n");
             Console.WriteLine("Os mods foram desinstalados com sucesso, adeus :(");
             Console.WriteLine("O instalador fechará em 10 segundos...");
-            Console.WriteLine("\nCriado Por: CastBlacKing");
+            Console.WriteLine("\nCriado Por: João Pster");
             System.Threading.Thread.Sleep(10000);
         }
         
         public static void UpdateMessage()
         {
-            int svopsecec;
+            //int svopsecec;
             Console.WriteLine("========== HOK ==========\n");
             Console.WriteLine("Prontinho, tudo foi atualizado com sucesso!!");
             Console.WriteLine("O instalador fechará em 10 segundos...");
-            Console.WriteLine("\nCriado Por: CastBlacKing");
+            Console.WriteLine("\nCriado Por: João Pster");
             System.Threading.Thread.Sleep(1000);
-            //Escolhendo Entrada
+            /*//Escolhendo Entrada
             Console.WriteLine("Deseja entrar no servidor?");
             Console.WriteLine("[1] Sim");
             Console.WriteLine("[2] Não");
             Console.Write("> ");
             svopsecec = int.Parse(Console.ReadLine());;
             //Entrada
-            JoinOption(svopsecec);
+            JoinOption(svopsecec);*/
         }
         
         #endregion
@@ -500,8 +500,8 @@ namespace InstaladorHOK
         //Função principal
         public static void Main(string[] args)
         {
-            // Entrart ou Instalar
-            ChoseOption();
+            /*// Entrart ou Instalar
+            ChoseOption();*/
             
             //Escolhendo Diretório
             if(programa.TestDefaultDirectory())
